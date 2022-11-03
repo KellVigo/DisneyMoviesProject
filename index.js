@@ -1,6 +1,7 @@
 //Main endpoint for movies
 let endpoint = `https://green-subdued-atlasaurus.glitch.me/movies`
 
+console.log("I am getting attached")
 //All movies array
 let allMovies = []
 
@@ -31,6 +32,7 @@ const getMovies = async () => {
         let moviesRequest = await fetch(endpoint)
         let moviesData = await moviesRequest.json()
         allMovies = moviesData
+        console.log(allMovies)
     }catch(err){
         console.error(err)
     }
@@ -112,7 +114,7 @@ const displayMovies = () => {
     })
 }
 
-displayMovies()
-
-(()=>{
-})
+(async ()=>{
+    await getMovies()
+    displayMovies()
+})()
