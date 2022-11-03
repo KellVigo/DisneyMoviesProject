@@ -74,47 +74,54 @@ const deleteMovie = async (id) => {
 
 //Populate the movies div
 const displayMovies = () => {
-    console.log("I am running")
     const container = document.getElementById('movies')
 
-//Clear the movies container
+    const cardBody = document.createElement('div')
+    cardBody.classList.add('card-body')
+
+    //Clear the movies container
     container.innerHTML = ''
 
-//Iterate through all movies
+    //Iterate through all movies
     allMovies.forEach(movie=>{
 
-//Create the movie image
+        //Create the movie image
         let img = document.createElement('img')
         img.src = movie['image']
+        img.classList.add('card-img-top')
 
-//Create the movie title
+        //Create the movie title
         let title = document.createElement('h3')
         title.innerText = movie['title']
+        title.classList.add('card-title')
 
-//Create the movie rating
-// let rating = document.createElement('h4')
-// rating.innerText = movie['rating']
+        //Create the movie rating
+        // let rating = document.createElement('h4')
+        // rating.innerText = movie['rating']
         let ratingComponent = pizzaRatingComponent(movie,(rating)=>{
             console.log("You clicked " + rating)
         })
 
-//Description
+        //Description
         let description = document.createElement('p')
         description.innerText = movie['description']
+        description.classList.add('card-text')
 
-//Create the movie card div
+        //Create the movie card div
         let movieCard = document.createElement('div')
+        movieCard.classList.add('card')
 
-//Add a class for css
-        movieCard.className = 'movie-card'
+        //Add a class for css
+        movieCard.classList.add('movie-card')
 
-//Put  all the sauce together
-        movieCard.appendChild(img)
-        movieCard.appendChild(title)
-        movieCard.appendChild(ratingComponent)
-        movieCard.appendChild(description)
+        //Put  all the sauce together
+        cardBody.appendChild(img)
+        cardBody.appendChild(title)
+        cardBody.appendChild(ratingComponent)
+        cardBody.appendChild(description)
+        movieCard.appendChild(cardBody)
 
-//Let it be like the beatles.
+        //Let it be like the beatles.
         container.appendChild(movieCard)
     })
 }
@@ -122,64 +129,53 @@ const displayMovies = () => {
 
 //Pizza rating component
 const pizzaRatingComponent = (movie,onRatingChange) => {
-//Make the main container that will hold the pizzas for rating
+    //Make the main container that will hold the pizzas for rating
     let ratingContainer = document.createElement('div')
-    let currentIcons = []
+
+    //Iterate through all the pizza icons
     for(let i = 1; i <= 5; i++){
-        if(movie['rating'] >= i){
-//Draw filled icon
-            let singlePizzaIcon = document.createElement('li')
-            singlePizzaIcon.classList.add('fa-sharp')
-            singlePizzaIcon.classList.add('fa-solid')
-            singlePizzaIcon.classList.add('fa-pizza-slice')
-            singlePizzaIcon.classList.add('me-1')
-            singlePizzaIcon.classList.add('text-primary')
-            singlePizzaIcon.setAttribute('rating',i)
-            $(singlePizzaIcon).hover(e=>{
-                let thisR = e.target.getAttribute('rating')
-                if(movie["rating"] < thisR){
-                    e.target.classList.add('text-primary')
-                }else{
-                    e.target.classList.remove('text-primary')
-                }
-            },e=>{
-                let thisR = e.target.getAttribute('rating')
-                if(movie["rating"] > thisR){
-                    e.target.classList.add('text-primary')
-                    let rightIconCount = 5 - thisR
-                    for(let i = thisR - 1; i < 5; i++){
-                        currentIcons[i].classList.remove('text-primary')
-                    }
-                }else{
-                    e.target.classList.remove('text-primary')
-                }
-            })
-            singlePizzaIcon.onclick = (e) => {
-                let r = e.target.getAttribute('rating')
-                console.log(r)
-                onRatingChange(r)
+
+        //Draw filled icon
+        let singlePizzaIcon = document.createElement('li')
+
+        //Icon style
+        singlePizzaIcon.classList.add('fa-sharp')
+        singlePizzaIcon.classList.add('fa-solid')
+        singlePizzaIcon.classList.add('fa-pizza-slice')
+        singlePizzaIcon.classList.add('me-1')
+        singlePizzaIcon.classList.add('pizzaicon')
+        singlePizzaIcon.classList.add(movie['rating'] >= i ? 'text-primary' : 'text-black')
+
+        //Set the rating
+        singlePizzaIcon.setAttribute('rating', i)
+
+        //Handle click event
+        singlePizzaIcon.onclick = async (e) => {
+            //Get the rating for the current pizza icon
+            let r = Number(e.target.getAttribute('rating'))
+
+            //Confirm that they want to change the rating
+            let confirm = window.confirm(`Are you sure you want to change the rating to ${r}?`)
+
+            //If they confirm
+            if(confirm) {
+                //Generate an updated movie object for the current movie
+                let newMovieObject = {...movie,rating : r}
+
+                //Wait for the movie to get updated on the backend
+                await updateMovie(movie.id,newMovieObject)
+
+                //Get the list of movies again
+                await getMovies()
+
+                //Display the new updated list of movies
+                await displayMovies()
             }
-            ratingContainer.appendChild(singlePizzaIcon)
-            currentIcons.push(singlePizzaIcon)
-        }else{
-//Draw opaque icon
-            let singlePizzaIcon = document.createElement('li')
-            singlePizzaIcon.classList.add('fa-solid')
-            singlePizzaIcon.classList.add('fa-pizza-slice')
-            singlePizzaIcon.classList.add('me-1')
-            singlePizzaIcon.setAttribute('rating',i)
-            $(singlePizzaIcon).hover(e=>{
-                let thisR = e.target.getAttribute('rating')
-                console.log(thisR)
-            })
-            singlePizzaIcon.onclick = (e) => {
-                let r = e.target.getAttribute('rating')
-                console.log(r)
-                onRatingChange(r)
-            }
-            ratingContainer.appendChild(singlePizzaIcon)
-            currentIcons.push(singlePizzaIcon)
         }
+
+        //Add the pizza icon to the rating container
+        ratingContainer.appendChild(singlePizzaIcon)
+
     }
     return ratingContainer
 }
