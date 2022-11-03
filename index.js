@@ -84,6 +84,31 @@ const displayMovies = () => {
 
     //Iterate through all movies
     allMovies.forEach(movie=>{
+        //Create delete icon
+        let del = document.createElement('li')
+        del.classList.add('fa-sharp')
+        del.classList.add('fa-solid')
+        del.classList.add('fa-trash')
+        del.classList.add('me-1')
+        del.classList.add('deleteicon')
+
+
+        //Create update icon
+        let updt = document.createElement('li')
+        updt.classList.add('fa-sharp')
+        updt.classList.add('fa-solid')
+        updt.classList.add('fa-pen')
+        updt.classList.add('me-1')
+        updt.classList.add('updateicon')
+        updt.classList.add('btn')
+        updt.classList.add('btn-primary')
+        updt.setAttribute('data-bs-toggle','modal')
+        updt.setAttribute('data-bs-target','#staticBackdrop')
+
+        updt.onclick = e => {
+            currentMovie = movie
+        }
+
 
         //Create the movie image
         let img = document.createElement('img')
@@ -115,6 +140,8 @@ const displayMovies = () => {
         movieCard.classList.add('movie-card')
 
         //Put  all the sauce together
+        cardBody.appendChild(del)
+        cardBody.appendChild(updt)
         cardBody.appendChild(img)
         cardBody.appendChild(title)
         cardBody.appendChild(ratingComponent)
