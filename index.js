@@ -124,30 +124,61 @@ const displayMovies = () => {
 const pizzaRatingComponent = (movie,onRatingChange) => {
 //Make the main container that will hold the pizzas for rating
     let ratingContainer = document.createElement('div')
-
+    let currentIcons = []
     for(let i = 1; i <= 5; i++){
-        if(movie['rating'] < i){
+        if(movie['rating'] >= i){
 //Draw filled icon
             let singlePizzaIcon = document.createElement('li')
-            singlePizzaIcon.className = 'fa-sharp fa-solid fa-pizza-slice'
+            singlePizzaIcon.classList.add('fa-sharp')
+            singlePizzaIcon.classList.add('fa-solid')
+            singlePizzaIcon.classList.add('fa-pizza-slice')
+            singlePizzaIcon.classList.add('me-1')
+            singlePizzaIcon.classList.add('text-primary')
             singlePizzaIcon.setAttribute('rating',i)
+            $(singlePizzaIcon).hover(e=>{
+                let thisR = e.target.getAttribute('rating')
+                if(movie["rating"] < thisR){
+                    e.target.classList.add('text-primary')
+                }else{
+                    e.target.classList.remove('text-primary')
+                }
+            },e=>{
+                let thisR = e.target.getAttribute('rating')
+                if(movie["rating"] > thisR){
+                    e.target.classList.add('text-primary')
+                    let rightIconCount = 5 - thisR
+                    for(let i = thisR - 1; i < 5; i++){
+                        currentIcons[i].classList.remove('text-primary')
+                    }
+                }else{
+                    e.target.classList.remove('text-primary')
+                }
+            })
             singlePizzaIcon.onclick = (e) => {
                 let r = e.target.getAttribute('rating')
                 console.log(r)
                 onRatingChange(r)
             }
             ratingContainer.appendChild(singlePizzaIcon)
+            currentIcons.push(singlePizzaIcon)
         }else{
 //Draw opaque icon
             let singlePizzaIcon = document.createElement('li')
-            singlePizzaIcon.className = 'fa-duotone fa-pizza-slice'
+            singlePizzaIcon.classList.add('fa-solid')
+            singlePizzaIcon.classList.add('fa-pizza-slice')
+            singlePizzaIcon.classList.add('me-1')
             singlePizzaIcon.setAttribute('rating',i)
+            $(singlePizzaIcon).hover(e=>{
+                let thisR = e.target.getAttribute('rating')
+                console.log(thisR)
+            })
             singlePizzaIcon.onclick = (e) => {
                 let r = e.target.getAttribute('rating')
                 console.log(r)
                 onRatingChange(r)
             }
             ratingContainer.appendChild(singlePizzaIcon)
+            currentIcons.push(singlePizzaIcon)
         }
     }
     return ratingContainer
