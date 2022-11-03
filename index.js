@@ -81,13 +81,22 @@ const displayMovies = () => {
     //Iterate through all movies
     allMovies.forEach(movie=>{ 
 
+        let cardBody = document.createElement('div')
+        
+
+        cardBody.className = "card-body"
+
         //Create the movie image
         let img = document.createElement('img')
         img.src = movie.image
 
+        img.className = "card-img-top"
+
         //Create the movie title
         let title = document.createElement('h3')
         title.innerText = movie.title
+
+        title.className = "card-title"
 
         //Create the movie rating
         let rating = document.createElement('h4')
@@ -97,17 +106,20 @@ const displayMovies = () => {
         let description = document.createElement('p')
         description.innerText = movie.description
 
+        description.className = "card-text"
+
         //Create the movie card div
         let movieCard = document.createElement('div')
         
         //Add a class for css
-        movieCard.className = 'movie-card'
+        movieCard.className = 'movie-card card'
          
         //Put  all the sauce together
-        movieCard.appendChild(img)
-        movieCard.appendChild(title)
-        movieCard.appendChild(rating)
-        movieCard.appendChild(description)
+        cardBody.appendChild(img)
+        cardBody.appendChild(title)
+        cardBody.appendChild(rating)
+        cardBody.appendChild(description)
+        movieCard.appendChild(cardBody)
 
         //Let it be like the beatles.
         container.appendChild(movieCard)
