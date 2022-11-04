@@ -1,3 +1,5 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
 @import url('https://fonts.googleapis.com/css2?family=Henny+Penny&family=Inter&family=Irish+Grover&display=swap');
 
 li {
@@ -34,7 +36,7 @@ rating {
         height: 200px;
     }
 
-/* Dice to make square box */
+    /* Dice to make square box */
 
     .side {
         width: 100%;
@@ -67,41 +69,41 @@ rating {
 /* 2 Dot */
 
 .two::before {
-        background: transparent;
-        box-shadow: #000 -50px -50px 0px 0px, #000 50px 50px 0px 0px;
-    }
+    background: transparent;
+    box-shadow: #000 -50px -50px 0px 0px, #000 50px 50px 0px 0px;
+}
 
 /* 3 Dot */
 
 .three::before {
-        box-shadow: #f000 -50px 50px 0px 0px, #000 50px -50px 0px 0px;
-    }
+    box-shadow: #f000 -50px 50px 0px 0px, #000 50px -50px 0px 0px;
+}
 
 /* 4 Dot */
 
 .four::before {
 
-        background: transparent;
-        box-shadow: #000 -50px 50px 0px 0px, #000 -50px -50px 0px 0px,
-            #000 50px 50px 0px 0px, #000 50px -50px 0px 0px;
-    }
+    background: transparent;
+    box-shadow: #000 -50px 50px 0px 0px, #000 -50px -50px 0px 0px,
+        #000 50px 50px 0px 0px, #000 50px -50px 0px 0px;
+}
 
 
 /* 5 Dot */
 
 .five::before {
-        box-shadow: #000 -50px -50px 0px 0px, #000 -50px 50px 0px 0px,
-            #000 50px -50px 0px 0px, #000 50px 50px 0px 0px;
-    }
+    box-shadow: #000 -50px -50px 0px 0px, #000 -50px 50px 0px 0px,
+        #000 50px -50px 0px 0px, #000 50px 50px 0px 0px;
+}
 
 /* 6 Dot */
 
 .six::before {
-        background: transparent;
-        box-shadow: #000 -50px -50px 0px 0px, #000 -50px 0px 0px 0px,
-            #000 -50px 50px 0px 0px, #000 50px -50px 0px 0px, #000 50px 0px 0px 0px,
-            50px 50px 0px 0px;
-    }
+    background: transparent;
+    box-shadow: #000 -50px -50px 0px 0px, #000 -50px 0px 0px 0px,
+        #000 -50px 50px 0px 0px, #000 50px -50px 0px 0px, #000 50px 0px 0px 0px,
+        50px 50px 0px 0px;
+}
 
 /* 3-D Effect */
 
