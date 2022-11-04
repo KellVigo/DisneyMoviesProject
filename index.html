@@ -48,8 +48,7 @@
         <!-- Content here -->
     </div>
 
-    <!-- TODO: Add modal for adding and updating movies-->
-    <!-- Modal -->
+    <!-- TODO: Add modal updating movies-->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -64,8 +63,12 @@
                             <input type="text" class="form-control" id="movie-title">
                         </div>
                         <div class="mb-3">
-                            <label for="movie-description" class="col-form-label">Message:</label>
+                            <label for="movie-description" class="col-form-label">Movie Description</label>
                             <textarea class="form-control" id="movie-description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="movie-image-url" class="col-form-label">New Image Url</label>
+                            <input type="text" class="form-control" id="movie-image-url">
                         </div>
                         <div id="mb-3">
                             <div id="movie-rating">
@@ -76,7 +79,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="modal-close-btn" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+                    <button type="button" class="btn btn-primary" id="modal-update-btn">Update</button>
                 </div>
             </div>
         </div>

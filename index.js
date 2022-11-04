@@ -91,7 +91,17 @@ const displayMovies = () => {
         del.classList.add('fa-trash')
         del.classList.add('me-1')
         del.classList.add('deleteicon')
+        del.classList.add('btn')
+        del.classList.add('btn-primary')
 
+        del.onclick = async e => {
+            let confirm = window.confirm(`Are you sure you want to delete ${movie.title}?`)
+            if(confirm){
+                await deleteMovie(movie.id)
+                await getMovies()
+                displayMovies()
+            }
+        }
 
         //Create update icon
         let updt = document.createElement('li')
@@ -114,9 +124,12 @@ const displayMovies = () => {
         updt.onclick = e => {
             currentMovie = movie
             $('#movie-rating').empty()
-            $('#movie-rating').append(ratingComponent)
+            $('#movie-rating').append(pizzaRatingComponent(movie,(rating)=>{
+                console.log("You clicked " + rating) 
+            }))
             $('#movie-description').text(movie.description)
             $('#movie-title').val(movie.title)
+            $('#movie-image-url').val(movie.image)
         }
 
 
@@ -136,6 +149,7 @@ const displayMovies = () => {
         let description = document.createElement('p')
         description.innerText = movie['description']
         description.classList.add('card-text')
+    
 
         //Create the movie card div
         let movieCard = document.createElement('div')
@@ -163,12 +177,13 @@ const displayMovies = () => {
 const pizzaRatingComponent = (movie,onRatingChange) => {
     //Make the main container that will hold the pizzas for rating
     let ratingContainer = document.createElement('div')
-
+    let icons = []
     //Iterate through all the pizza icons
     for(let i = 1; i <= 5; i++){
 
         //Draw filled icon
         let singlePizzaIcon = document.createElement('li')
+        icons.push(singlePizzaIcon)
 
         //Icon style
         singlePizzaIcon.classList.add('fa-sharp')
@@ -210,17 +225,18 @@ const pizzaRatingComponent = (movie,onRatingChange) => {
                 //show new rating but don't update
                 //Get the selected rating
                 let r = Number(e.target.getAttribute('rating'))
-
+                ratingContainer.parentElement.setAttribute('rating',r)
                 //Iterate through the pizza icons and update their color
-                Array.from($(ratingContainer).children()).forEach((child,index)=>{
-                    console.log(child)
+                console.log("Rating should be " + r)
+                icons.forEach((icon,index) => {
                     if(index < r){
-                        child.classList.add('text-primary')
+                        icon.classList.add('text-primary')
+                        icon.classList.remove('text-black')
                     }else{
-                        child.classList.remove('text-primary')
+                        icon.classList.remove('text-primary')
+                        icon.classList.add('text-black')
                     }
                 })
-
             }
         }
 
@@ -229,6 +245,34 @@ const pizzaRatingComponent = (movie,onRatingChange) => {
 
     }
     return ratingContainer
+}
+
+document.getElementById('modal-update-btn').onclick = async e => {
+    console.log("Update button working")
+
+    let id = currentMovie.id    
+    let updatedMovie = {
+        title : $('#movie-title').val(),
+        description : $('#movie-description').val(),
+        rating : $('#movie-rating').attr('rating'),
+        image : $('#movie-image-url').val()
+    }
+    // console.log("Updating movie with id " + id)
+    // console.log(updatedMovie)
+
+    await updateMovie(id,updatedMovie)
+    await getMovies()
+    displayMovies()
+
+    // currentMovie = null
+
+    $('#modal-close-btn').click()
+
+}
+
+document.getElementById('modal-close-btn').onclick = e => {
+    currentMovie = null
+    console.log("Close button working")
 }
 
 (async ()=>{
