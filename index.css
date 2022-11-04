@@ -9,94 +9,141 @@ li {
 
 rating {
     color: grey;
+
     label:hover {
         color: red;
-}
+    }
 
-/* DICE */
+    /* DICE */
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
+    /* Dice in middle of page */
 
-.dice {
-    position: relative;
-    width: 200px;
-    height: 200px;
-}
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-.side {
-    width: 100%;
-    height: 100%;
-    background: #da0060;
-    border: 2px solid black;
-    position: absolute;
-    opacity: 0.7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-/* Dots on dice */
+    /* Dice shape */
 
-.side {
-    &:before {
-        content: '';
-        width: 20%;
-        height: 20%;
-        background: black;
-        border-radius: 50%;
-        box-shadow: red -50px -50px -50px 0px 0px, blue -50px 0px 0px 0px, yellow -50px 50px 0px 0px, green 50px -50px 0px 0px, orange 50px 0px 0px 0px white 50px 50px 0px 0px;
+    .dice {
+        position: relative;
+        width: 200px;
+        height: 200px;
+    }
+
+/* Dice to make square box */
+
+    .side {
+        width: 100%;
+        height: 100%;
+        background: #da0060;
+        border: 2px solid black;
+        position: absolute;
+        opacity: 0.7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Dots on dice */
+
+    /* 1 Dot */
+
+    .side {
+        &:before {
+            content: '';
+            width: 20%;
+            height: 20%;
+            background: black;
+            border-radius: 50%;
+            /* box-shadow: red -50px -50px -50px 0px 0px, blue -50px 0px 0px 0px, yellow -50px 50px 0px 0px, green 50px -50px 0px 0px, orange 50px 0px 0px 0px white 50px 50px 0px 0px; */
         }
     }
 }
 
 /* 2 Dot */
 
-.two {
-    &:before {
+.two::before {
         background: transparent;
         box-shadow: #000 -50px -50px 0px 0px, #000 50px 50px 0px 0px;
     }
-}
 
 /* 3 Dot */
 
-.three {
-    &:before {
+.three::before {
         box-shadow: #f000 -50px 50px 0px 0px, #000 50px -50px 0px 0px;
     }
-}
 
 /* 4 Dot */
 
-.four {
-    &:before {
+.four::before {
+
         background: transparent;
         box-shadow: #000 -50px 50px 0px 0px, #000 -50px -50px 0px 0px,
-        #000 50px 50px 0px 0px, #000 50px -50px 0px 0px;
+            #000 50px 50px 0px 0px, #000 50px -50px 0px 0px;
     }
-}
+
 
 /* 5 Dot */
 
-.five {
-    &:before {
+.five::before {
         box-shadow: #000 -50px -50px 0px 0px, #000 -50px 50px 0px 0px,
-        #000 50px -50px 0px 0px, #000 50px 50px 0px 0px;
+            #000 50px -50px 0px 0px, #000 50px 50px 0px 0px;
     }
-}
 
 /* 6 Dot */
 
-.six {
-    &:before {
+.six::before {
         background: transparent;
         box-shadow: #000 -50px -50px 0px 0px, #000 -50px 0px 0px 0px,
-        #000 -50px 50px 0px 0px, #000 50px -50px 0px 0px, #000 50px 0px 0px 0px,
-        50px 50px 0px 0px;
+            #000 -50px 50px 0px 0px, #000 50px -50px 0px 0px, #000 50px 0px 0px 0px,
+            50px 50px 0px 0px;
     }
+
+/* 3-D Effect */
+
+.dice {
+    transform-style: preserve-3d;
+    transform: rotateY(185deg) rotateX(150deg) rotateZ(315deg);
+}
+
+.one {
+    transform: translateZ(100px);
+}
+
+.six {
+    transform: translateZ(-100px);
+}
+
+.two {
+    transform: translateX(-100px) rotateY(-90deg);
+}
+
+.five {
+    transform: translateX(100px) rotateY(90deg);
+}
+
+.three {
+    transform: translateY(100px) rotateX(90deg);
+}
+
+.four {
+    transform: translateY(-100px) rotateX(90deg);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotateY(0) rotateX(45deg) rotateZ(45deg);
+    }
+
+    to {
+        transform: rotateY(360deg) rotateX(45deg) rotateZ(45deg);
+    }
+}
+
+.dice {
+    animation: rotate 5s linear infinite;
 }
