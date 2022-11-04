@@ -104,9 +104,19 @@ const displayMovies = () => {
         updt.classList.add('btn-primary')
         updt.setAttribute('data-bs-toggle','modal')
         updt.setAttribute('data-bs-target','#staticBackdrop')
+        //Create the movie rating
+        // let rating = document.createElement('h4')
+        // rating.innerText = movie['rating']
+        let ratingComponent = pizzaRatingComponent(movie,(rating)=>{
+            console.log("You clicked " + rating)
+        })
 
         updt.onclick = e => {
             currentMovie = movie
+            $('#movie-rating').empty()
+            $('#movie-rating').append(ratingComponent)
+            $('#movie-description').text(movie.description)
+            $('#movie-title').val(movie.title)
         }
 
 
@@ -120,12 +130,7 @@ const displayMovies = () => {
         title.innerText = movie['title']
         title.classList.add('card-title')
 
-        //Create the movie rating
-        // let rating = document.createElement('h4')
-        // rating.innerText = movie['rating']
-        let ratingComponent = pizzaRatingComponent(movie,(rating)=>{
-            console.log("You clicked " + rating)
-        })
+
 
         //Description
         let description = document.createElement('p')
@@ -180,23 +185,42 @@ const pizzaRatingComponent = (movie,onRatingChange) => {
         singlePizzaIcon.onclick = async (e) => {
             //Get the rating for the current pizza icon
             let r = Number(e.target.getAttribute('rating'))
+            
+            if(!currentMovie){
+                //Confirm that they want to change the rating
+                let confirm = window.confirm(`Are you sure you want to change the rating to ${r}?`)
 
-            //Confirm that they want to change the rating
-            let confirm = window.confirm(`Are you sure you want to change the rating to ${r}?`)
+                //If they confirm
+                if(confirm) {
 
-            //If they confirm
-            if(confirm) {
-                //Generate an updated movie object for the current movie
-                let newMovieObject = {...movie,rating : r}
+                    // $('#modal-close-btn').click()
+                    //Generate an updated movie object for the current movie
+                    let newMovieObject = {...movie,rating : r}
 
-                //Wait for the movie to get updated on the backend
-                await updateMovie(movie.id,newMovieObject)
+                    //Wait for the movie to get updated on the backend
+                    await updateMovie(movie.id,newMovieObject)
 
-                //Get the list of movies again
-                await getMovies()
+                    //Get the list of movies again
+                    await getMovies()
 
-                //Display the new updated list of movies
-                await displayMovies()
+                    //Display the new updated list of movies
+                    displayMovies()
+                }
+            }else{
+                //show new rating but don't update
+                //Get the selected rating
+                let r = Number(e.target.getAttribute('rating'))
+
+                //Iterate through the pizza icons and update their color
+                Array.from($(ratingContainer).children()).forEach((child,index)=>{
+                    console.log(child)
+                    if(index < r){
+                        child.classList.add('text-primary')
+                    }else{
+                        child.classList.remove('text-primary')
+                    }
+                })
+
             }
         }
 
