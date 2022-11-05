@@ -10,6 +10,12 @@ let allMovies = []
 //The movie we are currently looking at
 let currentMovie = null
 
+//The genre filter
+let genreFilter = 'all'
+
+//Modal mode
+let modalMode = 'update'
+
 //Add a movie
 const addMovie = async (movie) => {
     try{
@@ -74,6 +80,14 @@ const deleteMovie = async (id) => {
 
 //Populate the movies div
 const displayMovies = () => {
+
+    if(genreFilter != 'all'){
+        //Filter the movies by the genre
+        allMovies = allMovies.filter(i=>{
+            i.genre == filter
+        })
+    }
+
     const container = document.getElementById('movies')
 
     const cardBody = document.createElement('div')
@@ -123,13 +137,16 @@ const displayMovies = () => {
 
         updt.onclick = e => {
             currentMovie = movie
+            modalMode = 'update'
+            $('#modal-title').text("Update Movie")
+            $('#modal-action-btn').text("Update")
             $('#movie-rating').empty()
             $('#movie-rating').append(pizzaRatingComponent(movie,(rating)=>{
                 console.log("You clicked " + rating) 
             }))
-            $('#movie-description').text(movie.description)
-            $('#movie-title').val(movie.title)
-            $('#movie-image-url').val(movie.image)
+            $('#movie-description').val(movie.description ? movie.description : '')
+            $('#movie-title').val(movie.title ? movie.title : '')
+            $('#movie-image-url').val(movie.image ? movie.image : '')
         }
 
 
@@ -137,13 +154,13 @@ const displayMovies = () => {
         let img = document.createElement('img')
         img.src = movie['image']
         img.classList.add('card-img-top')
+        img.classList.add('img-thumbnail')
+        img.classList.add('movie-image')
 
         //Create the movie title
         let title = document.createElement('h3')
         title.innerText = movie['title']
         title.classList.add('card-title')
-
-
 
         //Description
         let description = document.createElement('p')
@@ -177,6 +194,7 @@ const displayMovies = () => {
 const pizzaRatingComponent = (movie,onRatingChange) => {
     //Make the main container that will hold the pizzas for rating
     let ratingContainer = document.createElement('div')
+    ratingContainer.classList.add('rating-container')
     let icons = []
     //Iterate through all the pizza icons
     for(let i = 1; i <= 5; i++){
@@ -247,35 +265,144 @@ const pizzaRatingComponent = (movie,onRatingChange) => {
     return ratingContainer
 }
 
-document.getElementById('modal-update-btn').onclick = async e => {
-    console.log("Update button working")
+document.getElementById('modal-action-btn').onclick = async e => {
+    if(modalMode == 'update'){
+        console.log("Update button working")
 
-    let id = currentMovie.id    
-    let updatedMovie = {
-        title : $('#movie-title').val(),
-        description : $('#movie-description').val(),
-        rating : $('#movie-rating').attr('rating'),
-        image : $('#movie-image-url').val()
+        let id = currentMovie.id    
+        let updatedMovie = {
+            title : $('#movie-title').val(),
+            description : $('#movie-description').val(),
+            rating : $('#movie-rating').attr('rating'),
+            image : $('#movie-image-url').val()
+        }
+        // console.log("Updating movie with id " + id)
+        // console.log(updatedMovie)
+
+        await updateMovie(id,updatedMovie)
+        await getMovies()
+        displayMovies()
+
+        // currentMovie = null
+
+        $('#modal-close-btn').click()
+    }else {
+        ///Add a new movie
+        console.log("Adding a new movie")
+        let title = $('#movie-title').val()
+        let desc = $('#movie-description').val()
+        let rating = $('#movie-rating').attr('rating')
+        let imgSrc = $('#movie-image-url').val()
+        const newMovieModel = {
+            title : title,
+            description : desc,
+            rating : Number(rating),
+            image : imgSrc
+        }
+        await addMovie(newMovieModel)
+        $('#modal-close-btn').click()
+        clearModal()
+        await getMovies()
+        displayMovies()
+
     }
-    // console.log("Updating movie with id " + id)
-    // console.log(updatedMovie)
 
-    await updateMovie(id,updatedMovie)
-    await getMovies()
-    displayMovies()
+}
 
-    // currentMovie = null
+document.getElementById('add-movie-btn').onclick = async e => {
+    modalMode = 'add'
 
-    $('#modal-close-btn').click()
+    //Set the current movie to an empty movie
+    currentMovie = {
+        title : '',
+        description : '',
+        rating : 0,
+    }
 
+    clearModal()
+    $('#modal-title').text("Add New Movie")
+    $('#modal-action-btn').text("Add")
+    $('#movie-rating').empty()
+    $('#movie-rating').append(pizzaRatingComponent(currentMovie,(rating)=>{
+        console.log("You clicked " + rating) 
+    }))
+}
+
+const clearModal = () => {
+    $('#movie-title').val('')
+    $('#movie-description').val('')
+    $('#movie-image-url').val('')
 }
 
 document.getElementById('modal-close-btn').onclick = e => {
     currentMovie = null
     console.log("Close button working")
+
 }
+
+const displayLoader = () => {
+    //Create the loader container
+    const loader = document.createElement('div')
+    loader.classList.add('loader')
+    loader.classList.add('w-100')
+    loader.classList.add('h-100')
+    loader.classList.add('d-flex')
+    loader.classList.add('flex-col')
+    loader.classList.add('justify-content-center')
+    loader.classList.add('align-items-center')
+
+    const loadingLabel = document.createElement('h3')
+    loadingLabel.classList.add('me-5')
+    loadingLabel.innerText = "Loading..."
+
+    //Create the pizza slice icon
+    const pizzaSliceIcon = document.createElement('li')
+    pizzaSliceIcon.classList.add('fa-solid')
+    pizzaSliceIcon.classList.add('fa-pizza-slice')
+    pizzaSliceIcon.classList.add('spinning')
+    pizzaSliceIcon.style.fontSize = '120'
+
+    //Add the loading label
+    loader.appendChild(loadingLabel)
+    // loader.appendChild(document.createElement('br'))
+    //Add the pizza slice icon to the loader container
+    loader.appendChild(pizzaSliceIcon)
+
+
+    const container = document.getElementById('movies')
+    container.appendChild(loader)
+
+}
+
+
+$(".dropdown-item").click(function(){ //Genre option on menu is clicked
+    let option = $(this).text()
+    console.log(`You want ${option.split(' ')[0].toLowerCase()} movies`)
+    
+    //Deactivate all the menu options
+    let genreMenu = Array.from($('#genre-menu')[0].children)
+    genreMenu.forEach(item=>{
+        if($(item).attr('genre') == option){
+            $(item).attr('active',true)
+            genreFilter = option
+        }else{
+            $(item).attr('active',false)
+        }
+    })
+
+
+    displayMovies()
+
+
+    //Activate the menu option they clicked on
+    this.setAttribute('active',true)
+    
+});
 
 (async ()=>{
     await getMovies()
-    displayMovies()
+    displayLoader()
+    setTimeout(()=>{ //Wait two seconds
+        displayMovies() //And display the movies
+    },5000)
 })()

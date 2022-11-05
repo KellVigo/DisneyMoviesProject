@@ -1,2 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Henny+Penny&family=Inter&family=Irish+Grover&display=swap');
 
+.loader{
+}
+
+.spinning {
+    animation : spinning 1s linear 1s infinite alternate;
+}
+
+.pizzaicon:hover{
+    cursor: pointer;
+}
+
+.card-title{
+    text-align: center;
+}
+
+.rating-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.deleteicon, .updateicon {
+    float: right;
+}
+
+@media only screen and (min-width: 600px){
+    .movie-image{
+        max-width: 50%;
+        margin: auto !important;
+        display: block;
+    }
+}
+
+@keyframes  spinning {
+    from {
+        transform: rotateZ(0deg) scale(1);
+    }
+
+    to {
+        transform : rotateZ(360deg) scale(1.5);
+    }
+}

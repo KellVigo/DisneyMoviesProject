@@ -9,6 +9,7 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/f78da96e56.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <link rel="stylesheet" href="index.css"/>
     <title>Disney Movies</title>
 
     <!-- TODO: Import bootstrap & jQuery -->
@@ -30,17 +31,18 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Genres
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#disney">Disney Movies</a></li>
-                            <li><a class="dropdown-item" href="#sports">Sports Movies</a></li>
-                            <li><a class="dropdown-item" href="#action">Action Movies</a></li>
+                        <ul class="dropdown-menu" id="genre-menu" aria-labelledby="navbarDropdown">
+                            <li class="dropdown-item" genre="all">All Movies</li>
+                            <li class="dropdown-item" genre="disney">Disney Movies</li>
+                            <li class="dropdown-item" genre="sports">Sports Movies</li>
+                            <li class="dropdown-item" genre="action">Action Movies</li>
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <!-- <form class="d-flex"> -->
+                    <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="add-movie-btn">Add a Movie</button>
+                <!-- </form> -->
             </div>
         </div>
     </nav>
@@ -53,7 +55,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Movie</h1>
+                    <h1 id="modal-title" class="modal-title fs-5" id="staticBackdropLabel"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -71,6 +73,9 @@
                             <input type="text" class="form-control" id="movie-image-url">
                         </div>
                         <div id="mb-3">
+                            Rate this movie:
+                        </div>
+                        <div id="mb-3">
                             <div id="movie-rating">
 
                             </div>
@@ -79,7 +84,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="modal-close-btn" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="modal-update-btn">Update</button>
+                    <button type="button" class="btn btn-primary" id="modal-action-btn"></button>
                 </div>
             </div>
         </div>
