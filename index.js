@@ -90,14 +90,16 @@ const displayMovies = () => {
 
     const container = document.getElementById('movies')
 
-    const cardBody = document.createElement('div')
-    cardBody.classList.add('card-body')
+   
 
     //Clear the movies container
     container.innerHTML = ''
 
     //Iterate through all movies
     allMovies.forEach(movie=>{
+        const cardBody = document.createElement('div')
+        cardBody.classList.add('card-body')
+
         //Create delete icon
         let del = document.createElement('li')
         del.classList.add('fa-sharp')
@@ -165,12 +167,12 @@ const displayMovies = () => {
         //Description
         let description = document.createElement('p')
         description.innerText = movie['description']
-        description.classList.add('card-text')
+        description.classList.add('card-text',"p-4")
     
 
         //Create the movie card div
         let movieCard = document.createElement('div')
-        movieCard.classList.add('card')
+        movieCard.classList.add('card',"mt-2","mb-2")
 
         //Add a class for css
         movieCard.classList.add('movie-card')
@@ -185,7 +187,7 @@ const displayMovies = () => {
         movieCard.appendChild(cardBody)
 
         //Let it be like the beatles.
-        container.appendChild(movieCard)
+        container.append(movieCard)
     })
 }
 
