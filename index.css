@@ -1,35 +1,33 @@
-@import "../node_modules/bootstrap/scss/bootstrap";
-
 @import url('https://fonts.googleapis.com/css2?family=Henny+Penny&family=Inter&family=Irish+Grover&display=swap');
 
-body{
-    background: linear-gradient(to bottom, #FF0000, #404545,#C96363);
+body {
+    background: linear-gradient(to bottom, #FF0000, #404545, #C96363);
     background-position: center;
     background-attachment: fixed;
 }
 
 #nav-container {
-    padding-top: 4px; 
-    padding-bottom: 4px; 
-    border-bottom-left-radius: 10px; 
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    background: linear-gradient(red, black,red);
+    background: linear-gradient(red, black, red);
     box-shadow: 0px 0px 10px black;
 }
 
-.loader{
+.loader {
     color: white;
 }
 
 .spinning {
-    animation : spinning 1s linear 1s infinite alternate;
+    animation: spinning 1s linear 1s infinite alternate;
 }
 
-.pizzaicon:hover{
+.pizzaicon:hover {
     cursor: pointer;
 }
 
-.card-title{
+.card-title {
     text-align: center;
 }
 
@@ -38,11 +36,12 @@ body{
     margin-bottom: 30px;
 }
 
-.deleteicon, .updateicon {
+.deleteicon,
+.updateicon {
     float: right;
 }
 
-.card{
+.card {
     box-shadow: 0px 0px 10px black;
 }
 
@@ -50,16 +49,16 @@ body{
     margin-bottom: 100px !important;
 }
 
-.footer{
+.footer {
     padding: 12px;
     background: white;
     position: fixed;
     bottom: 0;
     width: 100vw;
-    background: linear-gradient(red, black,red);
+    background: linear-gradient(red, black, red);
     color: white;
     box-shadow: 0px 0px 10px black;
-    z-index : 3;
+    z-index: 3;
 }
 
 .card-description {
@@ -71,11 +70,9 @@ body{
     box-shadow: 0px 0px 10px white;
 }
 
-.movie-image {
-    
-}
+.movie-image {}
 
-@media only screen and (min-width: 600px){
+@media only screen and (min-width: 600px) {
     /* .movie-image{
         max-width: 50%;
         margin: auto !important;
@@ -83,12 +80,12 @@ body{
     } */
 }
 
-@keyframes  spinning {
+@keyframes spinning {
     from {
         transform: rotateZ(0deg) scale(1);
     }
 
     to {
-        transform : rotateZ(360deg) scale(1.5);
+        transform: rotateZ(360deg) scale(1.5);
     }
 }

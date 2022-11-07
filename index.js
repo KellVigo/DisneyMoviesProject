@@ -1,5 +1,4 @@
-
-(()=>{
+(() => {
 
     //Main endpoint for movies
     let endpoint = `https://green-subdued-atlasaurus.glitch.me/movies`
@@ -19,67 +18,66 @@
 
     //Add a movie
     const addMovie = async (movie) => {
-        try{
+        try {
             let addMovieRequest = await fetch(endpoint, {
-                method : 'POST',
-                headers : {
-                    'Content-Type' : 'application/json'
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                body : JSON.stringify(movie)
+                body: JSON.stringify(movie)
             })
 
             console.log("Adding movie was a success")
             console.log(addMovieRequest)
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
     }
 
     //Pull all movies
     const getMovies = async () => {
-        try{
+        try {
             let moviesRequest = await fetch(endpoint)
             let moviesData = await moviesRequest.json()
             fullMovieData = moviesData
             allMovies = moviesData
             console.log(allMovies)
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
     }
 
     //Update a movie
-    const updateMovie = async (id,movie) => {
-        try{
-            let updateRequest = await fetch(endpoint + `/${id}`,
-                {
-                    method: 'PUT',
-                    headers : {
-                        'Content-Type' : 'application/json'
-                    },
-                    body : JSON.stringify(movie)
-                })
+    const updateMovie = async (id, movie) => {
+        try {
+            let updateRequest = await fetch(endpoint + `/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(movie)
+            })
 
             return updateRequest
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
     }
 
     //Delete a movie
     const deleteMovie = async (id) => {
-        try{
-            let deleteRequest = await fetch(endpoint + `/${id}`,{
-                method : 'DELETE'
+        try {
+            let deleteRequest = await fetch(endpoint + `/${id}`, {
+                method: 'DELETE'
             })
 
             return deleteRequest
-        }catch(err){
+        } catch (err) {
             console.error(err)
         }
     }
 
-    const generateMovieDeleteBtn = (cardBody,movie) => {
+    const generateMovieDeleteBtn = (cardBody, movie) => {
         //Create delete icon
         let del = document.createElement('li')
         del.classList.add('fa-sharp')
@@ -92,7 +90,7 @@
 
         del.onclick = async e => {
             let confirm = window.confirm(`Are you sure you want to delete ${movie.title}?`)
-            if(confirm){
+            if (confirm) {
                 await deleteMovie(movie.id)
                 await getMovies()
                 displayMovies()
@@ -102,15 +100,15 @@
         cardBody.appendChild(del)
     }
 
-    const handleUpdateButtonClick = (movie) =>  {
+    const handleUpdateButtonClick = (movie) => {
         currentMovie = movie //Set the current movie to this one
         modalMode = 'update' //Set the modal mode to update
         $('#modal-title').text("Update Movie") //Change the modal title
         $('#modal-action-btn').text("Update") //Change the modal action button to update
         $('#movie-rating').empty() ///Empty the rating component on the modal
         //Add it back with the rating for the current movie
-        $('#movie-rating').append(pizzaRatingComponent(movie,(rating)=>{
-            console.log("You clicked " + rating) 
+        $('#movie-rating').append(pizzaRatingComponent(movie, (rating) => {
+            console.log("You clicked " + rating)
         }))
         //Set the description
         $('#movie-description').val(movie.description ? movie.description : '')
@@ -120,7 +118,7 @@
         $('#movie-image-url').val(movie.image ? movie.image : '')
     }
 
-    const generateMovieUpdateBtn = (cardBody,movie) => {
+    const generateMovieUpdateBtn = (cardBody, movie) => {
         //Create update icon
         let updt = document.createElement('li')
         updt.classList.add('fa-sharp')
@@ -130,12 +128,12 @@
         updt.classList.add('updateicon')
         updt.classList.add('btn')
         updt.classList.add('btn-primary')
-        updt.setAttribute('data-bs-toggle','modal')
-        updt.setAttribute('data-bs-target','#staticBackdrop')
+        updt.setAttribute('data-bs-toggle', 'modal')
+        updt.setAttribute('data-bs-target', '#staticBackdrop')
         //Create the movie rating
         // let rating = document.createElement('h4')
         // rating.innerText = movie['rating']
-       
+
 
         //When the user clicks the update button
         updt.onclick = () => handleUpdateButtonClick(movie)
@@ -145,17 +143,17 @@
 
     }
 
-    const generateMovieImage = (cardBody,movie) => {
+    const generateMovieImage = (cardBody, movie) => {
         //Create the movie image
         let img = document.createElement('img')
         img.src = movie['image']
-        img.classList.add('card-img-top',"img-thumbnail","movie-image")
+        img.classList.add('card-img-top', "img-thumbnail", "movie-image")
 
         //Append the movie image to the card body
         cardBody.appendChild(img)
     }
 
-    const generateMovieTitle = (cardBody,movie) => {
+    const generateMovieTitle = (cardBody, movie) => {
         //Create the movie title
         let title = document.createElement('h5')
         title.innerText = movie['title']
@@ -167,7 +165,7 @@
 
     const generateRatingComponent = (cardBody, movie) => {
         //generate the rating component
-        let ratingComponent = pizzaRatingComponent(movie,(rating)=>{
+        let ratingComponent = pizzaRatingComponent(movie, (rating) => {
             console.log("You clicked " + rating)
         })
 
@@ -175,42 +173,42 @@
         cardBody.appendChild(ratingComponent)
     }
 
-    const generateMovieDescription = (cardBody,movie) => {
+    const generateMovieDescription = (cardBody, movie) => {
         //Description
         let description = document.createElement('p')
         description.innerText = movie['description']
-        description.classList.add('card-text',"p-4","card-description")
+        description.classList.add('card-text', "p-4", "card-description")
 
         //Add the description to the card body
         cardBody.appendChild(description)
     }
 
-    const generateMovieCard = (movie,container) => {
+    const generateMovieCard = (movie, container) => {
         const cardBody = document.createElement('div')
         cardBody.style.zIndex = 2
         cardBody.classList.add('card-body')
 
         //generate the movie image component
-        generateMovieImage(cardBody,movie)
-        
+        generateMovieImage(cardBody, movie)
+
         //generate the movie title component
-        generateMovieTitle(cardBody,movie)
+        generateMovieTitle(cardBody, movie)
 
         //generate the rating component
-        generateRatingComponent(cardBody,movie)
+        generateRatingComponent(cardBody, movie)
 
         //generate the movie description component
-        generateMovieDescription(cardBody,movie)
-    
+        generateMovieDescription(cardBody, movie)
+
         //generate the delete button for the current card
-        generateMovieDeleteBtn(cardBody,movie)
+        generateMovieDeleteBtn(cardBody, movie)
 
         //generate the update button for the current card
-        generateMovieUpdateBtn(cardBody,movie)
+        generateMovieUpdateBtn(cardBody, movie)
 
         //Create the movie card div
         let movieCard = document.createElement('div')
-        movieCard.classList.add('card',"mt-2","mb-2","mx-1","col-12","col-md-5","col-lg-3","col-xl-2")
+        movieCard.classList.add('card', "mt-2", "mb-2", "mx-1", "col-12", "col-md-5", "col-lg-3", "col-xl-2")
         movieCard.style.position = 'relative'
 
         let movieCardBg = document.createElement('img')
@@ -236,7 +234,7 @@
         //Let it be like the beatles.
         container.append(movieCard)
     }
-    
+
     //Populate the movies div
     const displayMovies = () => {
         // if(genreFilter != 'all'){
@@ -253,19 +251,19 @@
         container.innerHTML = ''
 
         //Iterate through all movies
-        allMovies.forEach(movie=>{
-            generateMovieCard(movie,container)
+        allMovies.forEach(movie => {
+            generateMovieCard(movie, container)
         })
     }
 
     let fullMovieData
 
-    $('#searchbox').on('change',e=>{
-        if(e.target.value.length > 0){
+    $('#searchbox').on('change', e => {
+        if (e.target.value.length > 0) {
             console.log(e)
-            allMovies = allMovies.filter(i=>(i.title.toLowerCase().includes($(e.target).val().toLowerCase())))
+            allMovies = allMovies.filter(i => (i.title.toLowerCase().includes($(e.target).val().toLowerCase())))
             displayMovies()
-        }else{
+        } else {
             allMovies = fullMovieData
             displayMovies()
         }
@@ -273,13 +271,13 @@
 
 
     //Pizza rating component
-    const pizzaRatingComponent = (movie,onRatingChange) => {
+    const pizzaRatingComponent = (movie, onRatingChange) => {
         //Make the main container that will hold the pizzas for rating
         let ratingContainer = document.createElement('div')
         ratingContainer.classList.add('rating-container')
         let icons = []
         //Iterate through all the pizza icons
-        for(let i = 1; i <= 5; i++){
+        for (let i = 1; i <= 5; i++) {
 
             //Draw filled icon
             let singlePizzaIcon = document.createElement('li')
@@ -300,20 +298,23 @@
             singlePizzaIcon.onclick = async (e) => {
                 //Get the rating for the current pizza icon
                 let r = Number(e.target.getAttribute('rating'))
-                
-                if(!currentMovie){
+
+                if (!currentMovie) {
                     //Confirm that they want to change the rating
                     let confirm = window.confirm(`Are you sure you want to change the rating to ${r}?`)
 
                     //If they confirm
-                    if(confirm) {
+                    if (confirm) {
 
                         // $('#modal-close-btn').click()
                         //Generate an updated movie object for the current movie
-                        let newMovieObject = {...movie,rating : r}
+                        let newMovieObject = {
+                            ...movie,
+                            rating: r
+                        }
 
                         //Wait for the movie to get updated on the backend
-                        await updateMovie(movie.id,newMovieObject)
+                        await updateMovie(movie.id, newMovieObject)
 
                         //Get the list of movies again
                         await getMovies()
@@ -321,19 +322,19 @@
                         //Display the new updated list of movies
                         displayMovies()
                     }
-                }else{
+                } else {
                     //show new rating but don't update
 
                     //Get the selected rating
                     let r = Number(e.target.getAttribute('rating'))
-                    ratingContainer.parentElement.setAttribute('rating',r)
+                    ratingContainer.parentElement.setAttribute('rating', r)
 
                     //Iterate through the pizza icons and update their color
-                    icons.forEach((icon,index) => {
-                        if(index < r){
+                    icons.forEach((icon, index) => {
+                        if (index < r) {
                             icon.classList.add('text-primary')
                             icon.classList.remove('text-black')
-                        }else{
+                        } else {
                             icon.classList.remove('text-primary')
                             icon.classList.add('text-black')
                         }
@@ -349,27 +350,27 @@
     }
 
     document.getElementById('modal-action-btn').onclick = async e => {
-        if(modalMode == 'update'){
+        if (modalMode == 'update') {
             console.log("Update button working")
 
-            let id = currentMovie.id    
+            let id = currentMovie.id
             let updatedMovie = {
-                title : $('#movie-title').val(),
-                description : $('#movie-description').val(),
-                rating : $('#movie-rating').attr('rating'),
-                image : $('#movie-image-url').val()
+                title: $('#movie-title').val(),
+                description: $('#movie-description').val(),
+                rating: $('#movie-rating').attr('rating'),
+                image: $('#movie-image-url').val()
             }
             // console.log("Updating movie with id " + id)
             // console.log(updatedMovie)
 
-            await updateMovie(id,updatedMovie)
+            await updateMovie(id, updatedMovie)
             await getMovies()
             displayMovies()
 
             // currentMovie = null
 
             $('#modal-close-btn').click()
-        }else {
+        } else {
             ///Add a new movie
             console.log("Adding a new movie")
             let title = $('#movie-title').val()
@@ -377,10 +378,10 @@
             let rating = $('#movie-rating').attr('rating')
             let imgSrc = $('#movie-image-url').val()
             const newMovieModel = {
-                title : title,
-                description : desc,
-                rating : Number(rating),
-                image : imgSrc
+                title: title,
+                description: desc,
+                rating: Number(rating),
+                image: imgSrc
             }
             await addMovie(newMovieModel)
             $('#modal-close-btn').click()
@@ -397,17 +398,17 @@
 
         //Set the current movie to an empty movie
         currentMovie = {
-            title : '',
-            description : '',
-            rating : 0,
+            title: '',
+            description: '',
+            rating: 0,
         }
 
         clearModal()
         $('#modal-title').text("Add New Movie")
         $('#modal-action-btn').text("Add")
         $('#movie-rating').empty()
-        $('#movie-rating').append(pizzaRatingComponent(currentMovie,(rating)=>{
-            console.log("You clicked " + rating) 
+        $('#movie-rating').append(pizzaRatingComponent(currentMovie, (rating) => {
+            console.log("You clicked " + rating)
         }))
     }
 
@@ -458,18 +459,18 @@
     }
 
 
-    $(".dropdown-item").click(function(){ //Genre option on menu is clicked
+    $(".dropdown-item").click(function () { //Genre option on menu is clicked
         let option = $(this).text()
         console.log(`You want ${option.split(' ')[0].toLowerCase()} movies`)
-        
+
         //Deactivate all the menu options
         let genreMenu = Array.from($('#genre-menu')[0].children)
-        genreMenu.forEach(item=>{
-            if($(item).attr('genre') == option){
-                $(item).attr('active',true)
+        genreMenu.forEach(item => {
+            if ($(item).attr('genre') == option) {
+                $(item).attr('active', true)
                 genreFilter = option
-            }else{
-                $(item).attr('active',false)
+            } else {
+                $(item).attr('active', false)
             }
         })
 
@@ -478,16 +479,16 @@
 
 
         //Activate the menu option they clicked on
-        this.setAttribute('active',true)
-        
+        this.setAttribute('active', true)
+
     })
 
     const init = async () => {
         displayLoader() //Display the loading pizza animation
         await getMovies() //Wait until we have some movies
-        setTimeout(()=>{ //Wait two seconds
+        setTimeout(() => { //Wait two seconds
             displayMovies() //And display the movies
-        },5000)
+        }, 5000)
     }
 
     init()
