@@ -40,6 +40,7 @@
         try{
             let moviesRequest = await fetch(endpoint)
             let moviesData = await moviesRequest.json()
+            fullMovieData = moviesData
             allMovies = moviesData
             console.log(allMovies)
         }catch(err){
@@ -156,7 +157,7 @@
 
     const generateMovieTitle = (cardBody,movie) => {
         //Create the movie title
-        let title = document.createElement('h3')
+        let title = document.createElement('h5')
         title.innerText = movie['title']
         title.classList.add('card-title')
 
@@ -235,16 +236,15 @@
         //Let it be like the beatles.
         container.append(movieCard)
     }
-
+    
     //Populate the movies div
     const displayMovies = () => {
-        
-        if(genreFilter != 'all'){
-            //Filter the movies by the genre
-            allMovies = allMovies.filter(i=>{
-                i.genre == filter
-            })
-        }
+        // if(genreFilter != 'all'){
+        //     //Filter the movies by the genre
+        //     allMovies = allMovies.filter(i=>{
+        //         i.genre == filter
+        //     })
+        // }
 
         //Grab on to the movies container
         const container = document.getElementById('movies')
@@ -257,6 +257,19 @@
             generateMovieCard(movie,container)
         })
     }
+
+    let fullMovieData
+
+    $('#searchbox').on('change',e=>{
+        if(e.target.value.length > 0){
+            console.log(e)
+            allMovies = allMovies.filter(i=>(i.title.toLowerCase().includes($(e.target).val().toLowerCase())))
+            displayMovies()
+        }else{
+            allMovies = fullMovieData
+            displayMovies()
+        }
+    })
 
 
     //Pizza rating component
